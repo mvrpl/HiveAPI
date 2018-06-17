@@ -13,8 +13,8 @@ public final class JsonObj {
         this.objeto = objeto;
      }
 
-     public Object getJson() {
-      return toJSONObj(objeto);
+     public String getJson() {
+      return toJSONObj(objeto).toString();
     }
 
    public static Object toJSONObj(Object object) throws JSONException {

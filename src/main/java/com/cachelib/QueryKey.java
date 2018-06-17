@@ -9,7 +9,7 @@ public final class QueryKey implements Serializable {
 
     public QueryKey(final String queryText) {
         this.queryText = hashCode(queryText);
-     }
+    }
 
      public String getQueryText() {
       return queryText;
