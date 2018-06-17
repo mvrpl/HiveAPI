@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.http.HttpStatus;
 
 import com.app.Hive;
-
+  
 public class Servico extends HttpServlet {
 
 	private static Hive hiveClass = new Hive();
