@@ -40,49 +40,49 @@ public class Hive {
         props.put("jcs.auxiliary.DC.attributes.OptimizeAtRemoveCount", "300000");
         props.put("jcs.auxiliary.DC.attributes.OptimizeOnShutdown", "true");
         props.put("jcs.auxiliary.DC.attributes.DiskLimitType", "COUNT");
-        // props.put("", "");
+        
         ccm.configure(props);
 
-        JCS cache = JCS.getInstance( "default" );
+        JCS cache = JCS.getInstance("default");
 
         QueryKey queryKey = new QueryKey(userQuery);
 
         QueryResult resultSet = (QueryResult) cache.get(queryKey.getQueryText());
 
-      if (resultSet == null) {
+        if (resultSet == null) {
 
-	      Class.forName(driverName);
+            Class.forName(driverName);
 
-	      con = DriverManager.getConnection("jdbc:hive2://127.0.0.1:10000/default", "hive", "");
+            con = DriverManager.getConnection("jdbc:hive2://127.0.0.1:10000/default", "hive", "");
 
-          Statement stmt = con.createStatement();
-          
-          final List rows = new ArrayList();
-         
-          ResultSet resultSQL = stmt.executeQuery(userQuery);
+            Statement stmt = con.createStatement();
 
-          ResultSetMetaData rsmd = resultSQL.getMetaData();
+            final List rows = new ArrayList();
 
-          final int columnCount = resultSQL.getMetaData().getColumnCount();
+            ResultSet resultSQL = stmt.executeQuery(userQuery);
 
-          while (resultSQL.next()) {
-            HashMap<String, String> row = new HashMap<String, String>();
-            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-               row.put(rsmd.getColumnName(columnIndex), resultSQL.getString(columnIndex));
+            ResultSetMetaData rsmd = resultSQL.getMetaData();
+
+            final int columnCount = resultSQL.getMetaData().getColumnCount();
+
+            while (resultSQL.next()) {
+                HashMap<String, String> row = new HashMap<String, String>();
+                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                    row.put(rsmd.getColumnName(columnIndex), resultSQL.getString(columnIndex));
+                }
+                rows.add(row);
             }
-            rows.add(row);
-         }
 
-         resultSet = new QueryResult(columnCount, rows);
-         cache.put(queryKey.getQueryText(), resultSet); 
-      }
+            resultSet = new QueryResult(columnCount, rows);
+            cache.put(queryKey.getQueryText(), resultSet);
+        }
 
-      if (con != null) {
-          con.close();
-      }
+        if (con != null) {
+            con.close();
+        }
 
-      JsonObj json = new JsonObj(resultSet.getRows());
+        JsonObj json = new JsonObj(resultSet.getRows());
 
-      return json.getJson();
+        return json.getJson();
     }
 }

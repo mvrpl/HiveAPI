@@ -11,13 +11,13 @@ public final class JsonObj {
 
     public JsonObj(final Object objeto) {
         this.objeto = objeto;
-     }
-
-     public String getJson() {
-      return toJSONObj(objeto).toString();
     }
 
-   public static Object toJSONObj(Object object) throws JSONException {
+    public String getJson() {
+        return toJSONObj(objeto).toString();
+    }
+
+    public static Object toJSONObj(Object object) throws JSONException {
         if (object instanceof HashMap) {
             JSONObject json = new JSONObject();
             HashMap map = (HashMap) object;
@@ -27,7 +27,7 @@ public final class JsonObj {
             return json;
         } else if (object instanceof Iterable) {
             JSONArray json = new JSONArray();
-            for (Object value : ((Iterable)object)) {
+            for (Object value : ((Iterable) object)) {
                 json.put(toJSONObj(value));
             }
             return json;
